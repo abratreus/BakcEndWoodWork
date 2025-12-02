@@ -9,7 +9,6 @@ const ProductModel = {
              (SELECT url_imagem FROM imagens_produtos WHERE produto_id = p.id LIMIT 1) as imagem_capa
       FROM produtos p
       LEFT JOIN categorias c ON p.categoria_id = c.id
-      WHERE p.ativo = 1
     `;
     const [rows] = await db.query(query);
     return rows;
@@ -112,6 +111,11 @@ const ProductModel = {
 
   softDelete: async (id) => {
     const query = 'UPDATE produtos SET ativo = 0 WHERE id = ?';
+    const [result] = await db.query(query, [id]);
+    return result;
+  },
+  activateProduct: async (id) => {
+    const query = 'UPDATE produtos SET ativo = 1 WHERE id = ?';
     const [result] = await db.query(query, [id]);
     return result;
   }

@@ -25,7 +25,6 @@ app.use(cors({
 app.use(express.json());
 
 // Rotas
-app.use('/auth', authRoutes);
 app.use('/api/produtos', productRoutes);
 app.use('/api/usuarios', usuarioRoutes);
 //app.use('/api/pedidos', orderRoutes);

@@ -44,10 +44,10 @@ const UsuarioModel = {
   update: async (id, data) => {
     const query = `
       UPDATE usuarios 
-      SET nome_completo = ?, email = ?, tipo_perfil = ?
+      SET nome_completo = ?, email = ?, tipo_perfil = ?, ativo = ?
       WHERE id = ?
     `;
-    const values = [data.nome_completo, data.email, data.tipo_perfil, id];
+    const values = [data.nome_completo, data.email, data.tipo_perfil, data.ativo, id];
     const [result] = await db.query(query, values);
     return result;
   },
