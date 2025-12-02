@@ -13,6 +13,7 @@ router.post('/', upload.array('imagens', 5), productController.createProduct);
 router.put('/:id', upload.array('imagens', 5), productController.updateProduct);
 // 1. Soft Delete (Inativar) -> É uma atualização parcial
 router.patch('/:id/inativar', productController.softDeleteProduct);
+router.patch('/:id/ativar', productController.activateProduct);
 
 // 2. Hard Delete (Apagar do banco) -> É uma remoção real
 router.delete('/:id', productController.deleteProduct);

@@ -54,7 +54,8 @@ const UsuarioController = {
         nome_completo,
         email,
         senha_hash,
-        tipo_perfil
+        tipo_perfil,
+        ativo: 1
       });
 
       // Remove a senha do retorno para segurança
@@ -70,7 +71,7 @@ const UsuarioController = {
   // PUT /usuarios/:id
   updateUser: async (req, res) => {
     const { id } = req.params;
-    const { nome_completo, email, tipo_perfil, senha } = req.body;
+    const { nome_completo, email, tipo_perfil, senha, ativo } = req.body;
 
     try {
       const existingUser = await UsuarioModel.getById(id);
@@ -81,7 +82,8 @@ const UsuarioController = {
       const dataToUpdate = {
         nome_completo: nome_completo || existingUser.nome_completo,
         email: email || existingUser.email,
-        tipo_perfil: tipo_perfil || existingUser.tipo_perfil
+        tipo_perfil: tipo_perfil || existingUser.tipo_perfil,
+        ativo: (ativo !== undefined) ? ativo : existingUser.ativo
       };
 
       await UsuarioModel.update(id, dataToUpdate);
