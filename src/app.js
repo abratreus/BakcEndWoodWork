@@ -27,14 +27,17 @@ app.use(express.json());
 // Rotas
 app.use('/api/produtos', productRoutes);
 app.use('/api/usuarios', usuarioRoutes);
-//app.use('/api/pedidos', orderRoutes);
-//app.use('/api/pedidos', orderRoutes);
 app.use('/api/auth', authRoutes);
 app.use('/api/enderecos', enderecoRoutes);
 app.use('/api/categorias', categoriaRoutes);
 app.use('/api/imagens', imagemRoutes);
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
-// app.use('/api/orcamentos', orcamentoRoutes); 
+// app.use('/api/orcamentos', orcamentoRoutes);
+
+// Rota raiz apenas para teste
+app.get('/', (req, res) => {
+    res.json({ message: 'API funcionando!' });
+});
 
 // Rota padrão para 404
 app.use((req, res) => {

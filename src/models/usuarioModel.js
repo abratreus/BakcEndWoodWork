@@ -64,67 +64,28 @@ const UsuarioModel = {
     const [result] = await db.query(query, [id]);
     return result;
   },
-
-  // ... métodos anteriores
-
-  // 7. Salvar Token de Recuperação
-  saveResetToken: async (id, token, expiration) => {
-    const query = 'UPDATE usuarios SET token_recuperacao = ?, token_expiracao = ? WHERE id = ?';
-    await db.query(query, [token, expiration, id]);
-  },
-
-  // 8. Buscar por Token de Recuperação (Verifica se token existe e não expirou)
-  getByResetToken: async (token) => {
-    const query = `
-      SELECT * FROM usuarios 
-      WHERE token_recuperacao = ? 
-      AND token_expiracao > NOW()
-    `;
-    const [rows] = await db.query(query, [token]);
-    return rows[0];
-  },
   
-  // 9. Limpar Token após uso
-  clearResetToken: async (id) => {
-      const query = 'UPDATE usuarios SET token_recuperacao = NULL, token_expiracao = NULL WHERE id = ?';
-      await db.query(query, [id]);
-  },
-
-  // 10. Atualizar Senha (NECESSÁRIO para o reset funcionar)
-  updatePassword: async (id, novaSenhaHash) => {
-    const query = 'UPDATE usuarios SET senha_hash = ? WHERE id = ?';
-    await db.query(query, [novaSenhaHash, id]);
-  },
-
-  // Adicione isso dentro do objeto UsuarioModel em models/usuarioModel.js
-
-  // Salva o token e a data de expiração
+  // 7. Salvar Token de Recuperação (Unificado)
   saveResetToken: async (id, token, expires) => {
+    // Usando as colunas padrão do final do seu schema
     const sql = 'UPDATE usuarios SET reset_password_token = ?, reset_password_expires = ? WHERE id = ?';
     const [result] = await db.execute(sql, [token, expires, id]);
     return result;
   },
 
-  // Busca usuário pelo token E verifica se o token ainda é válido (data > agora)
+  // 8. Buscar por Token de Recuperação
   getByResetToken: async (token) => {
     const sql = 'SELECT * FROM usuarios WHERE reset_password_token = ? AND reset_password_expires > NOW()';
     const [rows] = await db.execute(sql, [token]);
-    return rows[0]; // Retorna undefined se não achar ou tiver expirado
+    return rows[0];
   },
 
-  // Atualiza a senha
-  updatePassword: async (id, novaSenhaHash) => {
-    const sql = 'UPDATE usuarios SET senha_hash = ? WHERE id = ?';
-    const [result] = await db.execute(sql, [novaSenhaHash, id]);
-    return result;
-  },
-
-  // Limpa o token após o uso (segurança)
+  // 9. Limpar Token após uso
   clearResetToken: async (id) => {
     const sql = 'UPDATE usuarios SET reset_password_token = NULL, reset_password_expires = NULL WHERE id = ?';
     const [result] = await db.execute(sql, [id]);
     return result;
   }
-};
+}; // Fim do objeto UsuarioModel
 
 module.exports = UsuarioModel;
